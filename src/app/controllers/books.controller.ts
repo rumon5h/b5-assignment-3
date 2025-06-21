@@ -27,10 +27,34 @@ booksRouter.post('/', async (req: Request, res: Response) => {
 }
 );
 
-// Get all books
+// Get all books by filtering and sorting
 booksRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const books = await BookModel.find();
+        const { filter, sortBy, sort, limit } = req.query;
+
+        let query: any = {};
+        if (filter) {
+            query.genre = filter;
+        }
+
+        let options: any = {};
+        if (sortBy && sort) {
+            options.sort = { [sortBy as string]: sort === 'desc' ? -1 : 1 };
+        }
+        if (limit) {
+            options.limit = parseInt(limit as string);
+        }
+
+        const books = await BookModel.find(query, null, options);
+
+        if (books.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: 'No books found',
+            });
+            return;
+        }
+
         res.status(200).json({
             success: true,
             data: books,
