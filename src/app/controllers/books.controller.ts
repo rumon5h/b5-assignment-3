@@ -43,3 +43,27 @@ booksRouter.get('/', async (req: Request, res: Response) => {
     }
 }
 );
+
+booksRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const bookId = req.params.id;
+        const book = await BookModel.findById(bookId);
+        if (!book) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found',
+            });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            data: book,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch book',
+            error: error,
+        });
+    }
+});
