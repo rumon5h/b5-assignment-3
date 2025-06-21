@@ -27,3 +27,19 @@ booksRouter.post('/', async (req: Request, res: Response) => {
 }
 );
 
+booksRouter.get('/', async (req: Request, res: Response) => {
+    try {
+        const books = await BookModel.find();
+        res.status(200).json({
+            success: true,
+            data: books,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch books',
+            error: error,
+        });
+    }
+}
+);
