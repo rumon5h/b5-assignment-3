@@ -97,3 +97,29 @@ booksRouter.put('/:bookId', async (req: Request, res: Response) => {
     }
 });
 
+
+// Delete a book by ID
+booksRouter.delete('/:bookId', async (req: Request, res: Response) => {
+    try {
+        const bookId = req.params.bookId;
+        const deletedBook = await BookModel.findByIdAndDelete(bookId);
+        if (!deletedBook) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found',
+            });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Book deleted successfully',
+            data: deletedBook,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to delete book',
+            error: error,
+        });
+    }
+});
