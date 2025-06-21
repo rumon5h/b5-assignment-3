@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { Book } from '../interfaces/books.interface';
+
 const bookSchema = new Schema<Book>({
     title: {
         type: String,
@@ -41,6 +42,9 @@ const bookSchema = new Schema<Book>({
         type: Boolean,
         default: true,
     },
+},{
+    timestamps: true,
+    versionKey: false,
 });
 
 const BookModel = model<Book>('Book', bookSchema);
