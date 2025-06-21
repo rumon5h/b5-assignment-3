@@ -4,7 +4,7 @@ import BookModel from '../models/books.model';
 
 export const booksRouter = express.Router();
 
-
+// Create a new book
 booksRouter.post('/', async (req: Request, res: Response) => {
     try {
         const bookData = req.body;
@@ -27,6 +27,7 @@ booksRouter.post('/', async (req: Request, res: Response) => {
 }
 );
 
+// Get all books
 booksRouter.get('/', async (req: Request, res: Response) => {
     try {
         const books = await BookModel.find();
@@ -44,9 +45,10 @@ booksRouter.get('/', async (req: Request, res: Response) => {
 }
 );
 
-booksRouter.get('/:id', async (req: Request, res: Response) => {
+// Get a book by ID
+booksRouter.get('/:bookId', async (req: Request, res: Response) => {
     try {
-        const bookId = req.params.id;
+        const bookId = req.params.bookId;
         const book = await BookModel.findById(bookId);
         if (!book) {
             res.status(404).json({
@@ -67,3 +69,31 @@ booksRouter.get('/:id', async (req: Request, res: Response) => {
         });
     }
 });
+
+// Update a book by ID
+booksRouter.put('/:bookId', async (req: Request, res: Response) => {
+    try {
+        const bookId = req.params.bookId;
+        const updatedData = req.body;
+        const updatedBook = await BookModel.findByIdAndUpdate(bookId, updatedData, { new: true });
+        if (!updatedBook) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found',
+            });
+            return;
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Book updated successfully',
+            data: updatedBook,
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: 'Failed to update book',
+            error: error,
+        });
+    }
+});
+
