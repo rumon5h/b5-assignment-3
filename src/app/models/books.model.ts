@@ -35,8 +35,8 @@ const bookSchema = new Schema<Book>({
     },
     copies: {
         type: Number,
-        required: [true, 'Copies are required'],
-        min: [0, 'Copies cannot be negative'],
+        required: [true, 'Copies are required']
+     
     },
     available: {
         type: Boolean,
@@ -46,6 +46,21 @@ const bookSchema = new Schema<Book>({
     timestamps: true,
     versionKey: false,
 });
+
+
+
+
+// post save hook to set available status based on copies
+bookSchema.post<Book>('save', function (doc, next) {
+    if (doc.copies > 0) {
+        doc.available = true;
+    } else {
+        doc.available = false;
+    }
+    next();
+
+});
+    
 
 
 
