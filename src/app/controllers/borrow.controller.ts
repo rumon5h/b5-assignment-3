@@ -41,3 +41,50 @@ borrowRouter.post('/', async (req: Request, res: Response): Promise<void> => {
         });
     }
 });
+
+
+borrowRouter.get('/', async (req: Request, res: Response): Promise<void> => {
+    try {
+        const borrowedBooksSummary = await BorrowModel.aggregate([
+            {
+                $group: {
+                    _id: '$book',
+                    totalQuantity: { $sum: '$quantity' },
+                },
+            },
+            {
+                $lookup: {
+                    from: 'books',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'bookDetails',
+                },
+            },
+            {
+                $unwind: '$bookDetails',
+            },
+            {
+                $project: {
+                    _id: 0,
+                    book: {
+                        title: '$bookDetails.title',
+                        isbn: '$bookDetails.isbn',
+                    },
+                    totalQuantity: 1,
+                },
+            },
+        ]);
+
+        res.status(200).json({
+            success: true,
+            message: 'Borrowed books summary retrieved successfully',
+            data: borrowedBooksSummary,
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: 'Failed to retrieve borrowed books summary',
+            error: error instanceof Error ? error.message : String(error),
+        });
+    }
+});

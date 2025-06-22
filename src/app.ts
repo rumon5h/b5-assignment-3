@@ -9,7 +9,7 @@ app.use(express.json())
 
 
 app.use('/api/books', booksRouter);
-app.use('/api/borrows', borrowRouter);
+app.use('/api/borrow', borrowRouter);
 
 
 app.get('/', (req: Request, res: Response) => {
