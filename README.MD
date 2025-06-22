@@ -52,7 +52,7 @@ A **robust**, **TypeScript-powered** RESTful API for managing books and borrowin
 
 ### 4. Update a Book
 
-**PATCH** `/api/books/:bookId`
+**PUT** `/api/books/:bookId`
 
 ### 5. Delete a Book
 
