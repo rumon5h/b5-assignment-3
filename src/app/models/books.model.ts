@@ -36,7 +36,6 @@ const bookSchema = new Schema<Book>({
     copies: {
         type: Number,
         required: [true, 'Copies are required']
-     
     },
     available: {
         type: Boolean,
