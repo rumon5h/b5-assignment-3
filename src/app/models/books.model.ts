@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Book } from '../interfaces/books.interface';
+import { Book,BookModel } from '../interfaces/books.interface';
 
 const bookSchema = new Schema<Book>({
     title: {
@@ -47,6 +47,37 @@ const bookSchema = new Schema<Book>({
     versionKey: false,
 });
 
-const BookModel = model<Book>('Book', bookSchema);
+
+
+// static method to handle borrow update
+bookSchema.statics.updateBorrowedCopies = async function (book: string, quantity: number): Promise<void> {
+    const findBook = await this.findById(book);
+    if (!findBook) {
+        throw new Error('Book not found');
+    }
+    if (findBook.copies < quantity) {
+        throw new Error('Insufficient copies available');
+    }
+
+    if (findBook.copies === 0) {
+        findBook.available = false;
+        await findBook.save();
+        return;
+    }
+    findBook.copies -= quantity;
+
+    if (findBook.copies === 0) {
+        findBook.available = false;
+        await findBook.save();
+        return findBook;
+    } else {
+        findBook.available = true;
+        await findBook.save();
+        return findBook;
+    }
+    
+};
+
+const BookModel = model<Book, BookModel>('Book', bookSchema);
 
 export default BookModel;
