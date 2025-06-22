@@ -21,7 +21,7 @@ booksRouter.post('/', async (req: Request, res: Response) => {
         res.status(400).json({
             success: false,
             message: 'Failed to create book',
-            error: error,
+            error: (error as Error).message || 'An error occurred',
         });
     }
 }
