@@ -3,6 +3,8 @@ import { Borrow } from '../interfaces/borrow.interface';
 
 
 
+
+
 const borrowSchema = new mongoose.Schema<Borrow>({
     book: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: [true, 'Book is required'] },
     quantity: { type: Number, required: [true, 'Quantity is required'], min: [1, 'Quantity must be at least 1'] },
