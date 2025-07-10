@@ -1,4 +1,4 @@
-import express,{ Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import BookModel from '../models/books.model';
 
 
@@ -99,19 +99,38 @@ booksRouter.put('/:bookId', async (req: Request, res: Response) => {
     try {
         const bookId = req.params.bookId;
         const updatedData = req.body;
-        const updatedBook = await BookModel.findByIdAndUpdate(bookId, updatedData, { new: true });
-        if (!updatedBook) {
-            res.status(404).json({
-                success: false,
-                message: 'Book not found',
+        const copies = req?.body?.copies;
+
+        if (copies == 0) {
+            const updatedBook = await BookModel.findByIdAndUpdate(bookId, { ...updatedData, available: false, }, { new: true });
+            if (!updatedBook) {
+                res.status(404).json({
+                    success: false,
+                    message: 'Book not found',
+                });
+                return;
+            }
+            res.status(200).json({
+                success: true,
+                message: 'Book updated successfully',
+                data: updatedBook,
             });
-            return;
+        } else if (copies > 0) {
+            const updatedBook = await BookModel.findByIdAndUpdate(bookId, { ...updatedData, available: true, }, { new: true });
+            if (!updatedBook) {
+                res.status(404).json({
+                    success: false,
+                    message: 'Book not found',
+                });
+                return;
+            }
+            res.status(200).json({
+                success: true,
+                message: 'Book updated successfully',
+                data: updatedBook,
+            });
         }
-        res.status(200).json({
-            success: true,
-            message: 'Book updated successfully',
-            data: updatedBook,
-        });
+
     } catch (error) {
         res.status(400).json({
             success: false,

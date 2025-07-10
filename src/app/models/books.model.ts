@@ -47,13 +47,14 @@ const bookSchema = new Schema<Book>({
 });
 
 
+
+
 // pre save hook to ensure copies are not negative
 bookSchema.pre<Book>('save', function (next) {
     if (this.copies < 0) {
         const error = new Error('Copies cannot be negative');
-        next(error);
-        return;
-    }
+        return next(error);
+    }    
     next();
 });
 
@@ -61,8 +62,13 @@ bookSchema.pre<Book>('save', function (next) {
 bookSchema.post<Book>('save', function (doc, next) {
     if (doc.copies > 0) {
         doc.available = true;
-    } else {
+        doc.save()
+    } else if(doc.copies == 0) {
         doc.available = false;
+        doc.save()
+    }else if(doc.copies < 0){
+        next(new Error('Copies cannot be negative'))
+        return 
     }
     next();
     
