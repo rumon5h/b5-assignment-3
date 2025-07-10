@@ -5,8 +5,14 @@ import cors from "cors";
 
 const app: Application = express();
 
+
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://your-frontend.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(cors({origin: ["https://l2-b5-a4.vercel.app", "http://localhost:5173"]}))
 
 
 app.use('/api/books', booksRouter);
