@@ -1,16 +1,17 @@
 import express, { Application, Request, Response } from 'express';
 import { booksRouter } from './app/controllers/books.controller';
 import { borrowRouter } from './app/controllers/borrow.controller';
-import cors from 'cors';
+import cors from 'cors';
 
 
 
 const app: Application = express();
 
+
+app.use(express.json())
 app.use(cors({
     origin: ["https://l2-b5-a4.vercel.app"]
 }));
-app.use(express.json())
 
 
 app.use('/api/books', booksRouter);
