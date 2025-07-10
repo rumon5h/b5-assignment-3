@@ -8,7 +8,7 @@ import cors from 'cors';
 const app: Application = express();
 
 app.use(cors({
-    origin: "*",
+    origin: "https://l2-b5-a4.vercel.app",
     methods: ["GET", "PUT", "DELETE", "POST"]
 }));
 app.use(express.json())
