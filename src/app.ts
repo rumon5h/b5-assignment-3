@@ -13,7 +13,6 @@ app.use(
     origin: ['http://localhost:5173', 'https://l2-b5-a4.vercel.app']
    })
 );
-
 app.use(express.json());
 
 
