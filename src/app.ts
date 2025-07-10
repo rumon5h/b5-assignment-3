@@ -1,11 +1,13 @@
 import express, { Application, Request, Response } from 'express';
 import { booksRouter } from './app/controllers/books.controller';
 import { borrowRouter } from './app/controllers/borrow.controller';
+import cors from 'cors';
 
 
 
 const app: Application = express();
 
+app.use(cors());
 app.use(express.json())
 
 
