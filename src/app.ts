@@ -8,11 +8,15 @@ import { borrowRouter } from './app/controllers/borrow.controller';
 const app: Application = express();
 
 
-app.use(
-  cors({
-    origin: ['http://localhost:5173', 'https://l2-b5-a4.vercel.app']
-   })
-);
+const corsOptions ={
+   origin:'*', 
+   credentials:true,    
+   optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions)) 
+
+
 app.use(express.json());
 
 
