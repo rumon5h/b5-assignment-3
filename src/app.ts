@@ -1,19 +1,20 @@
 import express, { Application, Request, Response } from 'express';
 import { booksRouter } from './app/controllers/books.controller';
-import { borrowRouter } from './app/controllers/borrow.controller';
 import cors from 'cors';
+import { borrowRouter } from './app/controllers/borrow.controller';
 
 
 
 const app: Application = express();
 
 
-app.use(express.json())
-app.use(cors({
-    origin: ['https://l2-b5-a4.vercel.app', 'http://localhost:5173'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'https://l2-b5-a4.vercel.app']
+   })
+);
+
+app.use(express.json());
 
 
 app.use('/api/books', booksRouter);
