@@ -10,7 +10,7 @@ const app: Application = express();
 
 app.use(express.json())
 app.use(cors({
-    origin: ['https://l2-b5-a4.vercel.app']
+    origin: ['https://l2-b5-a4.vercel.app','http://localhost:5173']
 }));
 
 
