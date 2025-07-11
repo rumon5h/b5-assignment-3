@@ -8,7 +8,7 @@ const app: Application = express();
 
 app.use(cors({
   origin: ['https://l2-b5-a4.vercel.app','http://localhost:5173'],
-   methods: ["PUT", "POST", "GET","DELETE", "PATCH"],
+   methods: ["PUT", "POST", "GET","DELETE", "PATCH", "OPTIONS"],
 }));
 
 app.use(express.json());
