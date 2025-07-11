@@ -7,8 +7,10 @@ const app: Application = express();
 
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://l2-b5-a4.vercel.app"]
-}))
+  origin: ['https://l2-b5-a4.vercel.app','http://localhost:5173/'], // allow your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 
 app.use(express.json());
 
