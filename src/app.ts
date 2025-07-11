@@ -6,19 +6,9 @@ import cors from "cors";
 const app: Application = express();
 
 
-// ✅ Manual CORS middleware
-app.use((req: Request, res: Response, next: express.NextFunction) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://l2-b5-a4.vercel.app'); // or your frontend domain
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  // ✅ Handle preflight request
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
+app.use(cors({
+    origin: ["http://localhost:5173", "https://l2-b5-a4.vercel.app"]
+}))
 
 app.use(express.json());
 
